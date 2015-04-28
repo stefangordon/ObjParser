@@ -8,3 +8,4 @@ This is a pretty naive implementation, and only supports V, VT, F and MTLLIB ent
 
 All data is parsed into .net generic collections where you can operate on it, then write the file back out.
 
+Also, see http://www.stefangordon.com/parsing-wavefront-obj-files-in-c/
