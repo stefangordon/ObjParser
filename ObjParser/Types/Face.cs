@@ -54,12 +54,19 @@ namespace ObjParser.Types
             StringBuilder b = new StringBuilder();
             b.Append("f");
 
-            for(int i = 0; i < VertexIndexList.Count(); i++)
+            for (int i = 0; i < VertexIndexList.Count(); i++)
             {
-                b.AppendFormat(" {0}/{1}", VertexIndexList[i], TextureVertexIndexList[i]);                
+                if (i < TextureVertexIndexList.Length)
+                {
+                    b.AppendFormat(" {0}/{1}", VertexIndexList[i], TextureVertexIndexList[i]);
+                }
+                else
+                {
+                    b.AppendFormat(" {0}", VertexIndexList[i]);
+                }
             }
 
             return b.ToString();
         }
-	}
+    }
 }
