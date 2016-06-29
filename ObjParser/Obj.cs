@@ -38,7 +38,7 @@ namespace ObjParser
 			updateSize();
 		}
 
-		private void WriteObjFile(string path)
+		public void WriteObjFile(string path)
 		{
 			using (var outStream = File.OpenWrite(path))
 			using (var writer = new StreamWriter(outStream))
