@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ObjParser
+﻿namespace ObjParser
 {
 	public class Extent
 	{
@@ -18,7 +12,5 @@ namespace ObjParser
 		public double XSize { get { return XMax - XMin; } }
 		public double YSize { get { return YMax - YMin; } }
 		public double ZSize { get { return ZMax - ZMin; } }
-
-
 	}
 }
