@@ -14,29 +14,52 @@ namespace ObjParser
 
 		public Extent Size { get; set; }
 
-		public string Mtl { get; set; }		
+		public string Mtl { get; set; }
 
-		/// <summary>
-		/// Parse and load an OBJ file into memory.  Will consume memory
-		/// at aproximately 120% the size of the file.
-		/// </summary>
-		/// <param name="path">path to obj file on disk</param>
-		/// <param name="linesProcessedCallback">callback for status updates</param>
-		public void LoadObj(string path)
-		{
-			VertexList = new List<Vertex>();
-			FaceList = new List<Face>();
-			TextureList = new List<TextureVertex>();
+        /// <summary>
+        /// Constructor. Initializes VertexList, FaceList and TextureList.
+        /// </summary>
+	    public Obj()
+	    {
+            VertexList = new List<Vertex>();
+            FaceList = new List<Face>();
+            TextureList = new List<TextureVertex>();
+        }
 
-			var input = File.ReadLines(path);
+        /// <summary>
+        /// Load .obj from a filepath.
+        /// </summary>
+        /// <param name="file"></param>
+        public void LoadObj(string path)
+        {
+            LoadObj(File.ReadAllLines(path));
+        }
 
-			foreach (string line in input)
-			{
-				processLine(line);				
-			}
+        /// <summary>
+        /// Load .obj from a stream.
+        /// </summary>
+        /// <param name="file"></param>
+	    public void LoadObj(Stream data)
+	    {
+            using (var reader = new StreamReader(data))
+            {
+                LoadObj(reader.ReadToEnd().Split(Environment.NewLine.ToCharArray()));
+            }
+	    }
 
-			updateSize();
-		}
+        /// <summary>
+        /// Load .obj from a list of strings.
+        /// </summary>
+        /// <param name="data"></param>
+	    public void LoadObj(IEnumerable<string> data)
+	    {
+            foreach (var line in data)
+            {
+                processLine(line);
+            }
+
+            updateSize();
+        }
 
 		public void WriteObjFile(string path, string[] headerStrings)
 		{
