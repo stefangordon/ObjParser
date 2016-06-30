@@ -99,6 +99,23 @@ namespace ObjParser
 		/// </summary>
 		private void updateSize()
 		{
+            // If there are no vertices then size should be 0.
+	        if (VertexList.Count == 0)
+	        {
+	            Size = new Extent
+	            {
+                    XMax = 0,
+                    XMin = 0,
+                    YMax = 0,
+                    YMin = 0,
+                    ZMax = 0,
+                    ZMin = 0
+	            };
+
+	            // Avoid an exception below if VertexList was empty.
+	            return;
+	        }
+
 			Size = new Extent
 			{
 				XMax = VertexList.Max(v => v.X),
