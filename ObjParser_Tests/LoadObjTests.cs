@@ -5,7 +5,7 @@ using ObjParser;
 namespace ObjParser_Tests
 {
     [TestFixture]
-    public class ProcessLine_Tests
+    public class LoadObjTests
     {
         private Obj obj;
 
@@ -17,7 +17,7 @@ namespace ObjParser_Tests
 
         #region Vertex
         [Test]
-        public void ProcessLine_SingleVert_ValidInput()
+        public void LoadObj_OneVert_OneVertCount()
         {
             // Arrange
             var objFile = new[]
@@ -33,7 +33,7 @@ namespace ObjParser_Tests
         }
 
         [Test]
-        public void ProcessLine_TwoVert_ValidInput()
+        public void LoadOBj_TwoVerts_TwoVertCount()
         {
             // Arrange
             var objFile = new[]
@@ -50,7 +50,7 @@ namespace ObjParser_Tests
         }
 
         [Test]
-        public void ProcessLine_EmptyFile_ValidInput()
+        public void LoadObj_EmptyObj_EmptyObjNoVertsNoFaces()
         {
             // Arrange
             var objFile = new string[] {};
@@ -60,10 +60,11 @@ namespace ObjParser_Tests
 
             // Assert
             Assert.IsTrue(obj.VertexList.Count == 0);
+            Assert.IsTrue(obj.FaceList.Count == 0);
         }
 
         [Test]
-        public void ProcessLine_EmptyVertexLine_ValidInput()
+        public void LoadObj_NoVertPositions_ThrowsArgumentException()
         {
             // Arrange
             var objFile = new[]
@@ -79,7 +80,7 @@ namespace ObjParser_Tests
         }
 
         [Test]
-        public void ProcessLine_CommaSeperated_InvalidInput()
+        public void LoadObj_CommaSeperatedVertPositions_ThrowsArgumentException()
         {
             // Arrange
             var objFile = new[]
@@ -100,7 +101,7 @@ namespace ObjParser_Tests
         }
 
         [Test]
-        public void ProcessLine_LettersInsteadOfPositions_InvalidInput()
+        public void LoadObj_LettersInsteadOfPositions_ThrowsArgumentException()
         {
             // Arrange
             var objFile = new[]
@@ -112,6 +113,29 @@ namespace ObjParser_Tests
 
             // Assert
             Assert.That(() => obj.LoadObj(objFile), Throws.TypeOf<ArgumentException>());
+        }
+        #endregion
+
+        #region Face
+        [Test]
+        public void LoadObj_FourVertsSingleFace_FourVertsOneFaceCount()
+        {
+            // Arrange
+            var objFile = new[]
+            {
+                "v -0.500000 -0.500000 0.500000",
+                "v 0.500000 -0.500000 0.500000",
+                "v -0.500000 0.500000 0.500000",
+                "v 0.500000 0.500000 0.500000",
+                "f 1/1/1 2/2/1 3/3/1"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+
+            // Assert
+            Assert.IsTrue(obj.VertexList.Count == 4);
+            Assert.IsTrue(obj.FaceList.Count == 1);
         }
         #endregion
     }
