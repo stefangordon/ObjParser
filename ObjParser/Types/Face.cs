@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -34,13 +35,13 @@ namespace ObjParser.Types
                 string[] parts = data[i + 1].Split('/');
 
                 int vindex;
-                success = int.TryParse(parts[0], out vindex);
+                success = int.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out vindex);
                 if (!success) throw new ArgumentException("Could not parse parameter as int");
                 VertexIndexList[i] = vindex;
 
                 if (parts.Count() > 1)
                 {
-                    success = int.TryParse(parts[1], out vindex);
+                    success = int.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out vindex);
                     if (!success) throw new ArgumentException("Could not parse parameter as int");
                     TextureVertexIndexList[i] = vindex;
                 }
