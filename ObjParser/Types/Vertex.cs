@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,13 +32,13 @@ namespace ObjParser.Types
 
             double x, y, z;
 
-            success = double.TryParse(data[1], out x);
+            success = double.TryParse(data[1], NumberStyles.Any, CultureInfo.InvariantCulture, out x);
             if (!success) throw new ArgumentException("Could not parse X parameter as double");
 
-            success = double.TryParse(data[2], out y);
+            success = double.TryParse(data[2], NumberStyles.Any, CultureInfo.InvariantCulture, out y);
             if (!success) throw new ArgumentException("Could not parse Y parameter as double");
 
-            success = double.TryParse(data[3], out z);
+            success = double.TryParse(data[3], NumberStyles.Any, CultureInfo.InvariantCulture, out z);
             if (!success) throw new ArgumentException("Could not parse Z parameter as double");
 
             X = x;
