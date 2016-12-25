@@ -42,8 +42,9 @@ namespace ObjParser.Types
                 if (parts.Count() > 1)
                 {
                     success = int.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out vindex);
-                    if (!success) throw new ArgumentException("Could not parse parameter as int");
-                    TextureVertexIndexList[i] = vindex;
+                    if (success) {
+                        TextureVertexIndexList[i] = vindex;
+                    }
                 }
             }
         }
