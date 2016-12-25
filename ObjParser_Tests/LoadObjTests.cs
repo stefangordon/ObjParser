@@ -137,6 +137,26 @@ namespace ObjParser_Tests
             Assert.IsTrue(obj.VertexList.Count == 4);
             Assert.IsTrue(obj.FaceList.Count == 1);
         }
+
+        [Test]
+        public void LoadObj_FourVertsSingleFaceNoTextureVerts_FourVertsOneFaceCount() {
+            // Arrange
+            var objFile = new[]
+            {
+                "v -0.500000 -0.500000 0.500000",
+                "v 0.500000 -0.500000 0.500000",
+                "v -0.500000 0.500000 0.500000",
+                "v 0.500000 0.500000 0.500000",
+                "f 1//1 2//1 3//1"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+
+            // Assert
+            Assert.IsTrue(obj.VertexList.Count == 4);
+            Assert.IsTrue(obj.FaceList.Count == 1);
+        }
         #endregion
     }
 }
