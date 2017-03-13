@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NUnit.Framework;
 using ObjParser;
 
@@ -136,6 +136,58 @@ namespace ObjParser_Tests
             // Assert
             Assert.IsTrue(obj.VertexList.Count == 4);
             Assert.IsTrue(obj.FaceList.Count == 1);
+            Assert.IsNull(obj.FaceList[0].UseMtl);
+        }
+
+        [Test]
+        public void LoadObj_FourVertsThreeFace_TwoMaterialsCount() {
+            // Arrange
+            var objFile = new[]
+            {
+                "v -0.500000 -0.500000 0.500000",
+                "v 0.500000 -0.500000 0.500000",
+                "v -0.500000 0.500000 0.500000",
+                "v 0.500000 0.500000 0.500000",
+                "usemtl Material",
+                "f 1/1/1 2/2/1 3/3/1",
+                "usemtl Material.001",
+                "f 1/1/1 2/2/1 3/3/1",
+                "f 1/1/1 2/2/1 3/3/1"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+
+            // Assert
+            Assert.IsTrue(obj.VertexList.Count == 4);
+            Assert.IsTrue(obj.FaceList.Count == 3);
+            Assert.AreEqual(obj.FaceList[0].UseMtl, "Material");
+            Assert.AreEqual(obj.FaceList[1].UseMtl, "Material.001");
+            Assert.AreEqual(obj.FaceList[2].UseMtl, "Material.001");
+        }
+
+        [Test]
+        public void LoadObj_FourVertsTwoFace_OneMaterialCount() {
+            // Arrange
+            var objFile = new[]
+            {
+                "v -0.500000 -0.500000 0.500000",
+                "v 0.500000 -0.500000 0.500000",
+                "v -0.500000 0.500000 0.500000",
+                "v 0.500000 0.500000 0.500000",
+                "f 1/1/1 2/2/1 3/3/1",
+                "usemtl Material",
+                "f 1/1/1 2/2/1 3/3/1"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+
+            // Assert
+            Assert.IsTrue(obj.VertexList.Count == 4);
+            Assert.IsTrue(obj.FaceList.Count == 2);
+            Assert.IsNull(obj.FaceList[0].UseMtl);
+            Assert.AreEqual(obj.FaceList[1].UseMtl, "Material");
         }
 
         [Test]

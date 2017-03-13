@@ -14,6 +14,7 @@ namespace ObjParser
 
 		public Extent Size { get; set; }
 
+		public string UseMtl { get; set; }
 		public string Mtl { get; set; }
 
         /// <summary>
@@ -139,6 +140,9 @@ namespace ObjParser
 			{
 				switch (parts[0])
 				{
+					case "usemtl":
+						UseMtl = parts[1];
+						break;
 					case "mtllib":
 						Mtl = parts[1];
 						break;
@@ -151,6 +155,7 @@ namespace ObjParser
 					case "f":
 						Face f = new Face();
 						f.LoadFromStringArray(parts);
+						f.UseMtl = UseMtl;
 						FaceList.Add(f);
 						break;
 					case "vt":
