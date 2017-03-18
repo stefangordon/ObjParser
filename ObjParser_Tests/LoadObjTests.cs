@@ -120,7 +120,7 @@ namespace ObjParser_Tests
 
         #region Mtl
         [Test]
-        public void Mtl_LoadObj_TwoMaterials() {
+        public void Mtl_LoadMtl_TwoMaterials() {
             // Arrange
             var mtlFile = new[]
             {
@@ -147,7 +147,7 @@ namespace ObjParser_Tests
             };
 
             // Act
-            mtl.LoadObj(mtlFile);
+            mtl.LoadMtl(mtlFile);
 
             // Assert
             Assert.AreEqual(2, mtl.MaterialList.Count);

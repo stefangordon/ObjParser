@@ -22,20 +22,20 @@ namespace ObjParser
         /// Load .obj from a filepath.
         /// </summary>
         /// <param name="file"></param>
-        public void LoadObj(string path)
+        public void LoadMtl(string path)
         {
-            LoadObj(File.ReadAllLines(path));
+            LoadMtl(File.ReadAllLines(path));
         }
 
         /// <summary>
         /// Load .obj from a stream.
         /// </summary>
         /// <param name="file"></param>
-	    public void LoadObj(Stream data)
+	    public void LoadMtl(Stream data)
         {
             using (var reader = new StreamReader(data))
             {
-                LoadObj(reader.ReadToEnd().Split(Environment.NewLine.ToCharArray()));
+                LoadMtl(reader.ReadToEnd().Split(Environment.NewLine.ToCharArray()));
             }
         }
 
@@ -43,7 +43,7 @@ namespace ObjParser
         /// Load .mtl from a list of strings.
         /// </summary>
         /// <param name="data"></param>
-	    public void LoadObj(IEnumerable<string> data)
+	    public void LoadMtl(IEnumerable<string> data)
         {
             foreach (var line in data)
             {

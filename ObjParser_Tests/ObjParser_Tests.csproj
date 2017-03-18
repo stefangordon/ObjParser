@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="LoadObjTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WriteObjTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
