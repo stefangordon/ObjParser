@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,6 +13,7 @@ namespace ObjParser.Types
         public const int MinimumDataLength = 4;
         public const string Prefix = "f";
 
+        public string UseMtl { get; set; }
         public int[] VertexIndexList { get; set; }
         public int[] TextureVertexIndexList { get; set; }
 
@@ -42,8 +43,9 @@ namespace ObjParser.Types
                 if (parts.Count() > 1)
                 {
                     success = int.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out vindex);
-                    if (!success) throw new ArgumentException("Could not parse parameter as int");
-                    TextureVertexIndexList[i] = vindex;
+                    if (success) {
+                        TextureVertexIndexList[i] = vindex;
+                    }
                 }
             }
         }
