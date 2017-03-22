@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -77,7 +77,14 @@ namespace ObjParser
 
 				VertexList.ForEach(v => writer.WriteLine(v));
 				TextureList.ForEach(tv => writer.WriteLine(tv));
-				FaceList.ForEach(f => writer.WriteLine(f));
+				string lastUseMtl = "";
+				foreach (Face face in FaceList) {
+					if (face.UseMtl != null && !face.UseMtl.Equals(lastUseMtl)) {
+						writer.WriteLine("usemtl " + face.UseMtl);
+						lastUseMtl = face.UseMtl;
+					}
+					writer.WriteLine(face);
+				}
 			}
 		}
 

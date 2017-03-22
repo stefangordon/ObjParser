@@ -18,10 +18,78 @@ namespace ObjParser_Tests
             mtl = new Mtl();
         }
 
+        #region Obj
+        [Test]
+        public void Obj_WriteObj_TwoMaterials() {
+            string tempfilepath = Path.GetTempFileName();
+            string[] headers = new string[] { "ObjParser" };
+
+            // Arrange
+            var objFile = new[]
+            {
+                "v -0.500000 -0.500000 0.500000",
+                "v 0.500000 -0.500000 0.500000",
+                "v -0.500000 0.500000 0.500000",
+                "v 0.500000 0.500000 0.500000",
+                "usemtl Material",
+                "f 1/1/1 2/2/1 3/3/1",
+                "usemtl Material.001",
+                "f 1/1/1 2/2/1 3/3/1",
+                "f 1/1/1 2/2/1 3/3/1"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+            obj.WriteObjFile(tempfilepath, headers);
+            obj = new Obj();
+            obj.LoadObj(tempfilepath);
+            File.Delete(tempfilepath);
+
+            // Assert
+            Assert.IsTrue(obj.VertexList.Count == 4);
+            Assert.IsTrue(obj.FaceList.Count == 3);
+            Assert.AreEqual("Material", obj.FaceList[0].UseMtl);
+            Assert.AreEqual("Material.001", obj.FaceList[1].UseMtl);
+            Assert.AreEqual("Material.001", obj.FaceList[2].UseMtl);
+        }
+
+        [Test]
+        public void Obj_WriteObj_NoMaterials() {
+            string tempfilepath = Path.GetTempFileName();
+            string[] headers = new string[] { "ObjParser" };
+
+            // Arrange
+            var objFile = new[]
+            {
+                "v -0.500000 -0.500000 0.500000",
+                "v 0.500000 -0.500000 0.500000",
+                "v -0.500000 0.500000 0.500000",
+                "v 0.500000 0.500000 0.500000",
+                "f 1/1/1 2/2/1 3/3/1",
+                "f 1/1/1 2/2/1 3/3/1",
+                "f 1/1/1 2/2/1 3/3/1"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+            obj.WriteObjFile(tempfilepath, headers);
+            obj = new Obj();
+            obj.LoadObj(tempfilepath);
+            File.Delete(tempfilepath);
+
+            // Assert
+            Assert.IsTrue(obj.VertexList.Count == 4);
+            Assert.IsTrue(obj.FaceList.Count == 3);
+            Assert.IsNull(obj.FaceList[0].UseMtl);
+            Assert.IsNull(obj.FaceList[1].UseMtl);
+            Assert.IsNull(obj.FaceList[2].UseMtl);
+        }
+        #endregion
+
         #region Mtl
         [Test]
         public void Mtl_WriteMtl_TwoMaterials() {
-            string filepath = Path.GetTempFileName();
+            string tempfilepath = Path.GetTempFileName();
             string[] headers = new string[] { "ObjParser" };
 
             // Arrange
@@ -51,9 +119,10 @@ namespace ObjParser_Tests
 
             // Act
             mtl.LoadMtl(mtlFile);
-            mtl.WriteMtlFile(filepath, headers);
+            mtl.WriteMtlFile(tempfilepath, headers);
             mtl = new Mtl();
-            mtl.LoadMtl(filepath);
+            mtl.LoadMtl(tempfilepath);
+            File.Delete(tempfilepath);
 
             // Assert
             Assert.AreEqual(2, mtl.MaterialList.Count);
