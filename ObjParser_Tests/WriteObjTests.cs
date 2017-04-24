@@ -31,6 +31,8 @@ namespace ObjParser_Tests
                 "v 0.500000 -0.500000 0.500000",
                 "v -0.500000 0.500000 0.500000",
                 "v 0.500000 0.500000 0.500000",
+                "vt 5.0711 0.0003",
+                "vt 5.4612 1.0000",
                 "usemtl Material",
                 "f 1/1/1 2/2/1 3/3/1",
                 "usemtl Material.001",
@@ -51,6 +53,10 @@ namespace ObjParser_Tests
             Assert.AreEqual("Material", obj.FaceList[0].UseMtl);
             Assert.AreEqual("Material.001", obj.FaceList[1].UseMtl);
             Assert.AreEqual("Material.001", obj.FaceList[2].UseMtl);
+            Assert.AreEqual(5.0711d, obj.TextureList[0].X);
+            Assert.AreEqual(0.0003d, obj.TextureList[0].Y);
+            Assert.AreEqual(5.4612d, obj.TextureList[1].X);
+            Assert.AreEqual(1.0000d, obj.TextureList[1].Y);
         }
 
         [Test]

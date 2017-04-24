@@ -118,6 +118,59 @@ namespace ObjParser_Tests
         }
         #endregion
 
+        #region TextureVertex
+        [Test]
+        public void LoadObj_OneTextureVert_OneTextureVertCount() {
+            // Arrange
+            var objFile = new[]
+            {
+                "vt 0.0 0.0"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+
+            // Assert
+            Assert.IsTrue(obj.TextureList.Count == 1);
+        }
+
+        [Test]
+        public void LoadOBj_TwoTextureVerts_TwoTextureVertCount() {
+            // Arrange
+            var objFile = new[]
+            {
+                "vt 0.0 0.0",
+                "vt 1.0 1.0"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+
+            // Assert
+            Assert.IsTrue(obj.TextureList.Count == 2);
+        }
+
+        [Test]
+        public void LoadOBj_TwoTextureVerts_TwoTextureVertValues() {
+            // Arrange
+            var objFile = new[]
+            {
+                "vt 5.0711 0.0003",
+                "vt 5.4612 1.0000"
+            };
+
+            // Act
+            obj.LoadObj(objFile);
+
+            // Assert
+            Assert.IsTrue(obj.TextureList.Count == 2);
+            Assert.AreEqual(5.0711d, obj.TextureList[0].X);
+            Assert.AreEqual(0.0003d, obj.TextureList[0].Y);
+            Assert.AreEqual(5.4612d, obj.TextureList[1].X);
+            Assert.AreEqual(1.0000d, obj.TextureList[1].Y);
+        }
+        #endregion
+
         #region Mtl
         [Test]
         public void Mtl_LoadMtl_TwoMaterials() {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -36,6 +36,8 @@ namespace ObjParser.Types
 
             success = double.TryParse(data[2], NumberStyles.Any, CultureInfo.InvariantCulture, out y);
             if (!success) throw new ArgumentException("Could not parse Y parameter as double");
+            X = x;
+            Y = y;
         }
 
         public override string ToString()
