@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ObjParser.Types
 {
@@ -23,16 +17,16 @@ namespace ObjParser.Types
 
         public Material()
         {
-            this.Name = "DefaultMaterial";
-            this.AmbientReflectivity = new Color();
-            this.DiffuseReflectivity = new Color();
-            this.SpecularReflectivity = new Color();
-            this.TransmissionFilter = new Color();
-            this.EmissiveCoefficient = new Color();
-            this.SpecularExponent = 0;
-            this.OpticalDensity = 1.0f;
-            this.Dissolve = 1.0f;
-            this.IlluminationModel = 0;
+            Name = "DefaultMaterial";
+            AmbientReflectivity = new Color();
+            DiffuseReflectivity = new Color();
+            SpecularReflectivity = new Color();
+            TransmissionFilter = new Color();
+            EmissiveCoefficient = new Color();
+            SpecularExponent = 0;
+            OpticalDensity = 1.0f;
+            Dissolve = 1.0f;
+            IlluminationModel = 0;
         }
 
         public void LoadFromStringArray(string[] data)

@@ -3,10 +3,10 @@ using System.Globalization;
 
 namespace ObjParser.Types
 {
-    public class Vertex : IType
+    public class NormalVertex : IType
     {
         public const int MinimumDataLength = 4;
-        public const string Prefix = "v";
+        public const string Prefix = "vn";
 
         public double X { get; set; }
 
@@ -44,7 +44,7 @@ namespace ObjParser.Types
 
         public override string ToString()
         {
-            return string.Format("v {0} {1} {2}", X, Y, Z);
+            return string.Format("vn {0} {1} {2}", X, Y, Z);
         }
     }
 }
