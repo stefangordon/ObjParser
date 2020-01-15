@@ -79,6 +79,7 @@ namespace ObjParser
 
 				VertexList.ForEach(v => writer.WriteLine(v));
 				TextureList.ForEach(tv => writer.WriteLine(tv));
+				NormalList.ForEach(nv => writer.WriteLine(nv));
 				string lastUseMtl = "";
 				foreach (Face face in FaceList) {
 					if (face.UseMtl != null && !face.UseMtl.Equals(lastUseMtl)) {
