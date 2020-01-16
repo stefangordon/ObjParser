@@ -140,7 +140,7 @@ namespace ObjParser
 
 		/// <summary>
 		/// Parses and loads a line from an OBJ file.
-		/// Currently only supports V, N, VT, F and MTLLIB prefixes
+		/// Currently only supports V, VN, VT, F and MTLLIB prefixes
 		/// </summary>		
 		private void processLine(string line)
 		{
@@ -169,10 +169,10 @@ namespace ObjParser
 						FaceList.Add(f);
 						break;
 					case "vn":
-						NormalVertex n = new NormalVertex();
-						n.LoadFromStringArray(parts);
-						NormalList.Add(n);
-						n.Index = NormalList.Count();
+						NormalVertex vn = new NormalVertex();
+						vn.LoadFromStringArray(parts);
+						NormalList.Add(vn);
+						vn.Index = NormalList.Count();
 						break;
 					case "vt":
 						TextureVertex vt = new TextureVertex();
