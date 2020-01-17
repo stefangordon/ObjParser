@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ObjParser.Types
 {
@@ -16,6 +13,7 @@ namespace ObjParser.Types
         public string UseMtl { get; set; }
         public int[] VertexIndexList { get; set; }
         public int[] TextureVertexIndexList { get; set; }
+        public int[] NormalVertexIndexList { get; set; }
 
         public void LoadFromStringArray(string[] data)
         {
@@ -28,6 +26,7 @@ namespace ObjParser.Types
             int vcount = data.Count() - 1;
             VertexIndexList = new int[vcount];
             TextureVertexIndexList = new int[vcount];
+            NormalVertexIndexList = new int[vcount];
 
 			bool success;
 
@@ -35,23 +34,30 @@ namespace ObjParser.Types
             {
                 string[] parts = data[i + 1].Split('/');
 
-                int vindex;
-                success = int.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out vindex);
+                success = int.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out int vindex);
                 if (!success) throw new ArgumentException("Could not parse parameter as int");
                 VertexIndexList[i] = vindex;
 
                 if (parts.Count() > 1)
                 {
                     success = int.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out vindex);
-                    if (success) {
+                    if (success) 
                         TextureVertexIndexList[i] = vindex;
-                    }
+                }
+                if (parts.Count() > 2)
+                {
+                    success = int.TryParse(parts[2], NumberStyles.Any, CultureInfo.InvariantCulture, out vindex);
+                    if (success)
+                        NormalVertexIndexList[i] = vindex;
                 }
             }
         }
 
         // HACKHACK this will write invalid files if there are no texture vertices in
         // the faces, need to identify that and write an alternate format
+
+        // TODO: Normals not supported!
+
         public override string ToString()
         {
             StringBuilder b = new StringBuilder();

@@ -77,7 +77,7 @@ namespace ObjParser
             }
         }
 
-        private Material currentMaterial()
+        private Material CurrentMaterial()
         {
             if (MaterialList.Count > 0) return MaterialList.Last();
             return new Material();
@@ -93,46 +93,48 @@ namespace ObjParser
 
             if (parts.Length > 0)
             {
-                Material CurrentMaterial = currentMaterial();
+                Material currentMaterial = CurrentMaterial();
                 Color c = new Color();
                 switch (parts[0])
                 {
                     case "newmtl":
-                        CurrentMaterial = new Material();
-                        CurrentMaterial.Name = parts[1];
-                        MaterialList.Add(CurrentMaterial);
+                        currentMaterial = new Material
+                        {
+                            Name = parts[1]
+                        };
+                        MaterialList.Add(currentMaterial);
                         break;
                     case "Ka":
                         c.LoadFromStringArray(parts);
-                        CurrentMaterial.AmbientReflectivity = c;
+                        currentMaterial.AmbientReflectivity = c;
                         break;
                     case "Kd":
                         c.LoadFromStringArray(parts);
-                        CurrentMaterial.DiffuseReflectivity = c;
+                        currentMaterial.DiffuseReflectivity = c;
                         break;
                     case "Ks":
                         c.LoadFromStringArray(parts);
-                        CurrentMaterial.SpecularReflectivity = c;
+                        currentMaterial.SpecularReflectivity = c;
                         break;
                     case "Ke":
                         c.LoadFromStringArray(parts);
-                        CurrentMaterial.EmissiveCoefficient = c;
+                        currentMaterial.EmissiveCoefficient = c;
                         break;
                     case "Tf":
                         c.LoadFromStringArray(parts);
-                        CurrentMaterial.TransmissionFilter = c;
+                        currentMaterial.TransmissionFilter = c;
                         break;
                     case "Ni":
-                        CurrentMaterial.OpticalDensity = float.Parse(parts[1]);
+                        currentMaterial.OpticalDensity = float.Parse(parts[1]);
                         break;
                     case "d":
-                        CurrentMaterial.Dissolve = float.Parse(parts[1]);
+                        currentMaterial.Dissolve = float.Parse(parts[1]);
                         break;
                     case "illum":
-                        CurrentMaterial.IlluminationModel = int.Parse(parts[1]);
+                        currentMaterial.IlluminationModel = int.Parse(parts[1]);
                         break;
                     case "Ns":
-                        CurrentMaterial.SpecularExponent = float.Parse(parts[1]);
+                        currentMaterial.SpecularExponent = float.Parse(parts[1]);
                         break;
                 }
             }
