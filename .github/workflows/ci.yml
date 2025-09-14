@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        dotnet: [ '8.0.x' ]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ matrix.dotnet }}
+
+    - name: Restore
+      run: dotnet restore ObjParser.sln
+
+    - name: Build
+      run: dotnet build ObjParser.sln -c Release --no-restore
+
+    - name: Test
+      run: dotnet test ObjParser_Tests/ObjParser_Tests.csproj -c Release --no-build --logger "trx;LogFileName=test_results.trx"
+
+    - name: Pack library
+      run: dotnet pack ObjParser/ObjParser.csproj -c Release -o ./artifacts --no-build
+
+  publish-nuget:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    - name: Extract version from tag
+      id: get_version
+      shell: bash
+      run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+    - name: Restore
+      run: dotnet restore ObjParser.sln
+    - name: Build
+      run: dotnet build ObjParser/ObjParser.csproj -c Release --no-restore
+    - name: Pack
+      run: dotnet pack ObjParser/ObjParser.csproj -c Release -o ./artifacts --no-build -p:ContinuousIntegrationBuild=true -p:Version=${{ steps.get_version.outputs.version }}
+    - name: Push to NuGet
+      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

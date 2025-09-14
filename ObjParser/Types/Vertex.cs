@@ -7,17 +7,28 @@ using System.Threading.Tasks;
 
 namespace ObjParser.Types
 {
+    /// <summary>
+    /// Geometric vertex (v). Supports optional homogeneous coordinate (w).
+    /// </summary>
     public class Vertex : IType
     {
         public const int MinimumDataLength = 4;
         public const string Prefix = "v";
 
+        /// <summary>X coordinate.</summary>
         public double X { get; set; }
 
+        /// <summary>Y coordinate.</summary>
         public double Y { get; set; }
 
+        /// <summary>Z coordinate.</summary>
         public double Z { get; set; }
 
+        // Optional homogeneous coordinate (weight)
+        /// <summary>Optional homogeneous weight (w) for rational geometry.</summary>
+        public double? W { get; set; }
+
+        /// <summary>1-based index assigned upon insertion into the model.</summary>
         public int Index { get; set; }
 
 		public void LoadFromStringArray(string[] data)
@@ -44,11 +55,23 @@ namespace ObjParser.Types
             X = x;
             Y = y;
             Z = z;
+
+            // Optional w (weight)
+            if (data.Length > 4)
+            {
+                double w;
+                if (double.TryParse(data[4], NumberStyles.Any, CultureInfo.InvariantCulture, out w))
+                {
+                    W = w;
+                }
+            }
         }
 
         public override string ToString()
         {
-            return string.Format("v {0} {1} {2}", X, Y, Z);
+            if (W.HasValue)
+                return string.Format(CultureInfo.InvariantCulture, "v {0} {1} {2} {3}", X, Y, Z, W.Value);
+            return string.Format(CultureInfo.InvariantCulture, "v {0} {1} {2}", X, Y, Z);
         }
     }
 }

@@ -2,36 +2,40 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Globalization;
+using System.Text;
 using ObjParser.Types;
 
 namespace ObjParser
 {
-    public class Mtl
+    public class MaterialLibrary
     {
-        public List<Material> MaterialList;
+        private readonly List<Material> _materials;
+
+        public IReadOnlyList<Material> Materials { get { return _materials; } }
 
         /// <summary>
-        /// Constructor. Initializes VertexList, FaceList and TextureList.
+        /// Constructor. Initializes the material list.
         /// </summary>
-        public Mtl()
+        public MaterialLibrary()
         {
-            MaterialList = new List<Material>();
+            _materials = new List<Material>();
         }
 
         /// <summary>
-        /// Load .obj from a filepath.
+        /// Load .mtl from a file path.
         /// </summary>
-        /// <param name="file"></param>
+        /// <param name="path">The path to the .mtl file.</param>
         public void LoadMtl(string path)
         {
             LoadMtl(File.ReadAllLines(path));
         }
 
         /// <summary>
-        /// Load .obj from a stream.
+        /// Load .mtl from a stream.
         /// </summary>
-        /// <param name="file"></param>
-	    public void LoadMtl(Stream data)
+        /// <param name="data">The input stream containing .mtl content.</param>
+        public void LoadMtl(Stream data)
         {
             using (var reader = new StreamReader(data))
             {
@@ -42,24 +46,25 @@ namespace ObjParser
         /// <summary>
         /// Load .mtl from a list of strings.
         /// </summary>
-        /// <param name="data"></param>
-	    public void LoadMtl(IEnumerable<string> data)
+        /// <param name="data">The lines of the .mtl file.</param>
+        public void LoadMtl(IEnumerable<string> data)
         {
             foreach (var line in data)
             {
-                processLine(line);
+                ProcessLine(line);
             }
         }
 
         public void WriteMtlFile(string path, string[] headerStrings)
         {
-            using (var outStream = File.OpenWrite(path))
-            using (var writer = new StreamWriter(outStream))
+            using (var outStream = File.Create(path))
+            using (var writer = new StreamWriter(outStream, new UTF8Encoding(false)))
             {
                 // Write some header data
                 WriteHeader(writer, headerStrings);
 
-                MaterialList.ForEach(v => writer.WriteLine(v));
+                for (int i = 0; i < _materials.Count; i++) 
+                    writer.WriteLine(_materials[i].ToString());
             }
         }
 
@@ -77,30 +82,36 @@ namespace ObjParser
             }
         }
 
-        private Material currentMaterial()
+        private Material GetCurrentMaterial()
         {
-            if (MaterialList.Count > 0) return MaterialList.Last();
+            if (_materials.Count > 0) return _materials.Last();
             return new Material();
         }
 
         /// <summary>
         /// Parses and loads a line from an OBJ file.
         /// Currently only supports V, VT, F and MTLLIB prefixes
-        /// </summary>		
-        private void processLine(string line)
+        /// </summary>
+        private void ProcessLine(string line)
         {
-            string[] parts = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (string.IsNullOrWhiteSpace(line)) return;
+            int hashIndex = line.IndexOf('#');
+            if (hashIndex >= 0) line = line.Substring(0, hashIndex);
+            line = line.Trim();
+            if (line.Length == 0) return;
+
+            string[] parts = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length > 0)
             {
-                Material CurrentMaterial = currentMaterial();
+                Material CurrentMaterial = GetCurrentMaterial();
                 Color c = new Color();
                 switch (parts[0])
                 {
                     case "newmtl":
                         CurrentMaterial = new Material();
-                        CurrentMaterial.Name = parts[1];
-                        MaterialList.Add(CurrentMaterial);
+                        if (parts.Length >= 2) CurrentMaterial.Name = parts[1];
+                        _materials.Add(CurrentMaterial);
                         break;
                     case "Ka":
                         c.LoadFromStringArray(parts);
@@ -123,16 +134,16 @@ namespace ObjParser
                         CurrentMaterial.TransmissionFilter = c;
                         break;
                     case "Ni":
-                        CurrentMaterial.OpticalDensity = float.Parse(parts[1]);
+                        if (parts.Length >= 2) CurrentMaterial.OpticalDensity = float.Parse(parts[1], CultureInfo.InvariantCulture);
                         break;
                     case "d":
-                        CurrentMaterial.Dissolve = float.Parse(parts[1]);
+                        if (parts.Length >= 2) CurrentMaterial.Dissolve = float.Parse(parts[1], CultureInfo.InvariantCulture);
                         break;
                     case "illum":
-                        CurrentMaterial.IlluminationModel = int.Parse(parts[1]);
+                        if (parts.Length >= 2) CurrentMaterial.IlluminationModel = int.Parse(parts[1], CultureInfo.InvariantCulture);
                         break;
                     case "Ns":
-                        CurrentMaterial.SpecularExponent = float.Parse(parts[1]);
+                        if (parts.Length >= 2) CurrentMaterial.SpecularExponent = float.Parse(parts[1], CultureInfo.InvariantCulture);
                         break;
                 }
             }
