@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/stefangordon/ObjParser/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/stefangordon/ObjParser/actions/workflows/ci.yml)
 [![Tests](https://img.shields.io/github/actions/workflow/status/stefangordon/ObjParser/ci.yml?branch=master&label=tests)](https://github.com/stefangordon/ObjParser/actions/workflows/ci.yml)
+[![NuGet](https://img.shields.io/nuget/v/ObjParser.svg)](https://www.nuget.org/packages/ObjParser/)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/ObjParser.svg)](https://www.nuget.org/packages/ObjParser/)
 
 A small, dependency‑free C# library for reading and writing Wavefront OBJ/MTL files.
 

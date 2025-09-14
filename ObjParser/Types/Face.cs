@@ -19,7 +19,7 @@ namespace ObjParser.Types
         /// <summary>Material in effect when this face was parsed (usemtl).</summary>
         public string? MaterialName { get; set; }
         /// <summary>Active OBJ group names (g) in effect when this face was parsed.</summary>
-        public string[]? GroupNames { get; set; }
+        public string[] GroupNames { get; set; }
         /// <summary>Smoothing group (s) in effect when this face was parsed.</summary>
         public string? SmoothingGroup { get; set; }
         /// <summary>Object name (o) in effect when this face was parsed.</summary>
@@ -36,6 +36,7 @@ namespace ObjParser.Types
             VertexIndexList = Array.Empty<int>();
             TextureVertexIndexList = Array.Empty<int>();
             NormalIndexList = Array.Empty<int>();
+            GroupNames = Array.Empty<string>();
         }
 
         public void LoadFromStringArray(string[] data)

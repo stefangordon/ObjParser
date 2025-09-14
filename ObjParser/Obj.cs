@@ -410,7 +410,7 @@ namespace ObjParser
 			if (face.VertexIndexList == null || face.VertexIndexList.Length < 3)
 				throw new ArgumentException("Face must contain at least 3 vertices.");
 			// Inherit current grouping state when unspecified
-			if (face.GroupNames == null) face.GroupNames = _currentGroups;
+			if (face.GroupNames.Length == 0) face.GroupNames = _currentGroups;
 			if (face.SmoothingGroup == null) face.SmoothingGroup = _currentSmoothing;
 			if (face.ObjectName == null) face.ObjectName = _currentObjectName;
 			// Resolve negative vertex indices per OBJ spec (-1 is last defined vertex)
@@ -542,7 +542,7 @@ namespace ObjParser
 		public int AddPoint(PointElement p)
 		{
 			// Inherit current grouping state when unspecified
-			if (p.GroupNames == null) p.GroupNames = _currentGroups;
+			if (p.GroupNames.Length == 0) p.GroupNames = _currentGroups;
 			if (p.SmoothingGroup == null) p.SmoothingGroup = _currentSmoothing;
 			if (p.ObjectName == null) p.ObjectName = _currentObjectName;
 			// Normalize negative vertex indices
@@ -563,7 +563,7 @@ namespace ObjParser
 		public int AddLine(LineElement l)
 		{
 			// Inherit current grouping state when unspecified
-			if (l.GroupNames == null) l.GroupNames = _currentGroups;
+			if (l.GroupNames.Length == 0) l.GroupNames = _currentGroups;
 			if (l.SmoothingGroup == null) l.SmoothingGroup = _currentSmoothing;
 			if (l.ObjectName == null) l.ObjectName = _currentObjectName;
 			for (int i = 0; i < l.VertexIndexList.Length; i++)

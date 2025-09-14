@@ -19,9 +19,10 @@ namespace ObjParser.Types
 		public PointElement()
 		{
 			VertexIndexList = Array.Empty<int>();
+			GroupNames = Array.Empty<string>();
 		}
 		/// <summary>Active group names (g) in effect when parsed.</summary>
-		public string[]? GroupNames { get; set; }
+		public string[] GroupNames { get; set; }
 		/// <summary>Smoothing group (s) in effect when parsed.</summary>
 		public string? SmoothingGroup { get; set; }
 		/// <summary>Object name (o) in effect when parsed.</summary>
